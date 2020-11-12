@@ -5,11 +5,15 @@ import Grid from './components/Grid'
 import Modes from './components/Modes'
 import Shapes from './components/Shapes'
 import ColorPicker from './components/ColorPicker'
+import Actions from './components/Actions' 
 import SelectCommands from './components/SelectCommands';
+import SelectActions from './components/SelectActions';
 
 function App() {
   const [mode, setMode] = React.useState(null);
   const [command, setCommand] = React.useState(null);
+  const [selection, setSelection] = React.useState(null);
+  const [action, setAction] = React.useState(null);
   const [shape, setShape] = React.useState(null);
   const [color, setColor] = React.useState(null);
   
@@ -20,7 +24,7 @@ function App() {
   },[]);
 
   function logKey(e) {
-    if (!e.repeat && e.code!==keyPressed.code){
+    if (!e.repeat){
       setKeyPressed(
         {
           'code':e.code,
@@ -44,15 +48,19 @@ function App() {
           :null}
           {mode?.name==='select'?
           <>
-          <SelectCommands broadcastCommand={setCommand}  />
+          <SelectCommands selection={selection} keyPressed={keyPressed} broadcastAction={setAction} broadcastCommand={setCommand}  />
+          <SelectActions selection={selection} keyPressed={keyPressed} broadcastAction={setAction}  />
+
           </>
           :null}
+          <Actions keyPressed={keyPressed} broadcastAction={setAction} />
+
           <ColorPicker keyPressed={keyPressed}  broadcastColor={setColor} />
         </div>
         
       </div>
       <div className="grid-pane">
-        <Grid mode={mode} command={command} shape={shape} color={color} keyPressed={keyPressed} />
+        <Grid mode={mode} broadcastSelection={setSelection} action={action} command={command} shape={shape} color={color} keyPressed={keyPressed} />
       </div>
     </div>
   );

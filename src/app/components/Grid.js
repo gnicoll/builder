@@ -109,6 +109,14 @@ const Grid = (props) => {
         destinationTop: 0,
     });
 
+    const [selection, setSelection] = React.useState(null);
+    //broadcastSelection
+    useEffect(() => {
+        props.broadcastSelection(selection);      
+
+    }, [props.broadcastSelection, selection]);
+    
+
     useEffect(() => {
         //unselect all  
         const selected = drawn.filter((d)=>d.selected);
@@ -117,75 +125,63 @@ const Grid = (props) => {
             drawings.forEach(d => {
                 d.selected = false;
             });
+            setSelection(null);
             setDrawn(drawings);
         }          
 
     }, [props.mode]);
+
     useEffect(() => {
-        
-        if ((props.command?.name==='delete')) {
+        if ((props.action?.name==='delete')) {
             //delete selected
             const notSelected = drawn.filter((d)=>!d.selected);
+            setSelection(null);
             setDrawn(notSelected);        
         }  
-
-        if (props.mode?.name==='select'||props.mode?.name==='multiselect') {
-            if ((props.keyPressed.key==='Delete')) {
-                //delete selected
-                const notSelected = drawn.filter((d)=>!d.selected);
-                setDrawn(notSelected);        
-            }  
-            if ((props.keyPressed.key==='g' ||props.keyPressed.key==='G')) {
-                //TODO: group selected
-                const notSelected = drawn.filter((d)=>!d.selected);
-                const selected = drawn.filter((d)=>d.selected);
-                //setDrawn(selectedDeleted);        
-            }     
-        } if (props.mode?.name==='select') {
-     
-            if ((props.keyPressed.key==='ArrowUp' && props.keyPressed.ctrlKey)) {
-                //move selection up
-                const notSelected = drawn.filter((d)=>!d.selected);
-                const selected = drawn.filter((d)=>d.selected);
-                if (selected.length===1) {
-                    const selection = selected[0];
-                    const drawings = [...drawn];
-                    drawings.reverse();
-                    drawings[selection.sort+1].sort--;
-                    selection.sort++
-                    drawings.sort((a,b)=>b.sort-a.sort);
-                    setDrawn(drawings);
-                }
-            }
-            if ((props.keyPressed.key==='ArrowDown' && props.keyPressed.ctrlKey)) {
-                //move selection up
-                const notSelected = drawn.filter((d)=>!d.selected);
-                const selected = drawn.filter((d)=>d.selected);
-                if (selected.length===1) {
-                    const selection = selected[0];
-                    const drawings = [...drawn];
-                    drawings.reverse();
-                    drawings[selection.sort-1].sort++;
-                    selection.sort--
-                    drawings.sort((a,b)=>b.sort-a.sort);
-                    setDrawn(drawings);
-                }
+        if ((props.action?.name==='group')) {
+            //TODO: group selected
+            const notSelected = drawn.filter((d)=>!d.selected);
+            const selected = drawn.filter((d)=>d.selected);
+            //setDrawn(selectedDeleted);        
+        }     
+        if ((props.action?.name==='up')) {
+            //move selection up
+            const notSelected = drawn.filter((d)=>!d.selected);
+            const selected = drawn.filter((d)=>d.selected);
+            if (selected.length===1) {
+                const selection = selected[0];
+                const drawings = [...drawn];
+                drawings.reverse();
+                drawings[selection.sort+1].sort--;
+                selection.sort++
+                drawings.sort((a,b)=>b.sort-a.sort);
+                setDrawn(drawings);
             }
         }
-
-        if ((props.keyPressed.key==='l' ||props.keyPressed.key==='L')) {
+        if ((props.action?.name==='down')) {
+            //move selection up
+            const notSelected = drawn.filter((d)=>!d.selected);
+            const selected = drawn.filter((d)=>d.selected);
+            if (selected.length===1) {
+                const selection = selected[0];
+                const drawings = [...drawn];
+                drawings.reverse();
+                drawings[selection.sort-1].sort++;
+                selection.sort--
+                drawings.sort((a,b)=>b.sort-a.sort);
+                setDrawn(drawings);
+            }
+        }
+        if ((props.action?.name==='linestoggle')) {
             if (gridClass===gridOnClass)
                 setGridClass("");
             else
                 setGridClass(gridOnClass);
         }  
-        
-        if ((props.keyPressed.key==='c' ||props.keyPressed.key==='C')) {
+        if ((props.action?.name==='console')) {
             setConsoleOn(!consoleOn);
         }  
-        
-
-    }, [props.keyPressed, props.command]);
+    }, [props.action]);
 
     function handleMouseMove(event) { 
         const posX = event.pageX - gridOffsetX;
@@ -264,6 +260,7 @@ const Grid = (props) => {
                     }
                     selectedFound = selectedFound || d.selected;
                 });
+                setSelection(drawings.filter((d)=>d.selected).length);
                 setDrawn(drawings);
             }
 
@@ -277,6 +274,7 @@ const Grid = (props) => {
                         d.selected = d.selected || (coversSquare(d, posX, posY));
                     }
                 });
+                setSelection(drawings.filter((d)=>d.selected).length);
                 setDrawn(drawings);
             }
         }

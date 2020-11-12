@@ -95,14 +95,6 @@ const ColorPicker = (props) => {
         <Container className="modescontainer" >
         <div class="ui divider"></div>
         <Container>
-            
-            <Popup
-                trigger={<Icon name='random' onClick={()=>randomPalette()} />}
-                content="random palette"
-                position='right center'
-                className="randomicon"
-            />
-
             <div className="palettecolorlist">
             <Modal
                 basic
@@ -110,7 +102,7 @@ const ColorPicker = (props) => {
                 onOpen={() => setOpen(true)}
                 open={open}
                 size='small'
-                trigger={<Icon name='paint brush' />}
+                trigger={<Icon className="paletteicon" name='paint brush' />}
                 >
                 <Header icon>
                     <Icon name='paint brush' />
@@ -157,6 +149,7 @@ const ColorPicker = (props) => {
             </div>
         </Container>
             <div className="colors">
+            
             {colorPalette.includes(color)?
                 <Icon style={{color:color}} name='minus square' onClick={()=>colorPalletClick(color)}/>
             :   <Icon style={{color:color}} name='plus square' onClick={()=>colorPalletClick(color)}/>

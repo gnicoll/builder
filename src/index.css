@@ -62,6 +62,15 @@ code {
   justify-content: center;
 }
 
+.modescontainer .ui.icon.button.actionBtn{
+  height: 3em;
+  width: 3em;
+  margin: .25em;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 .modescontainer .ui.icon.button.commandBtn{
   height: 3em;
   width: 3em;
@@ -118,7 +127,8 @@ code {
   flex-wrap: wrap;
 }
 .palettelist .ui.card.palettelistcard{
-  margin:.25em
+  margin:.25em;
+  width:auto;
 }
 .palettecolorlist {
   display: flex;
@@ -132,7 +142,7 @@ code {
   outline: .1em solid white;
   cursor: pointer;
 }
-.randomicon{
+.paletteicon{
   cursor: pointer;
 }
 .switchicon{

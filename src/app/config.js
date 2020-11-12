@@ -19,22 +19,57 @@ export const commands = [
     key:'s',
     iconname: 'hand pointer',
     active:true,
-    selectable:true
   },
   {
     name: 'multiselect',
     key:'m',
     iconname: 'hand pointer outline',
     active:false,
-    selectable:true
   }],
+];
+export const actions = [
+  [{
+    name: 'linestoggle',
+    key:'l',
+    iconname: 'grid layout',
+  },{
+    name: 'console',
+    key:'c',
+    iconname: 'terminal',
+  }],
+];
+
+export const selectActions = [
   [{
     name: 'delete',
     key:'Delete',
     iconname: 'delete',
-    selectable:false
+  }],
+  [ 
+    {
+      name: 'up',
+      key:'ArrowUp',
+      ctrlKey: true,
+      iconname: 'arrow up',
+    },
+    {
+      name: 'down',
+      key:'ArrowDown',
+      ctrlKey: true,
+      iconname: 'arrow down',
+    },
+  ],
+  [{
+    name: 'group',
+    key:'g',
+    iconname: 'object group',
+  },{
+    name: 'ungroup',
+    key:'u',
+    iconname: 'object ungroup',
   }],
 ];
+
 export const colors = [
   {
     name: 'white',
