@@ -1,0 +1,222 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.builder {
+  font-size: 16px;
+}
+.builder .ui-panes{
+  grid-template-columns: 230px;
+  display: grid;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+}
+.builder .tools-pane {
+
+}
+.builder .properties-pane {
+
+}
+
+.builder .grid-pane {
+  z-index: 1;
+  position: absolute;
+  top: 50px;
+  left:230px;
+  width: 100em;
+  height: 100em;
+}
+.builder .pane {
+
+}
+
+
+
+.modescontainer{
+  width: auto;
+  text-align: left;
+  padding: 5px 15px;
+  top: 0;
+  background-color: white;
+}
+.modescontainer .shape{
+  
+}
+.modescontainer .ui.icon.button.shapeBtn{
+  height: 3em;
+  width: 3em;
+  margin: .25em;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modescontainer .ui.icon.button.commandBtn{
+  height: 3em;
+  width: 3em;
+  margin: .25em;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modescontainer .colors {
+  display: flex;
+  height: 4.5em;
+  padding: .25em 0;
+}
+.modescontainer .secondarycolor {
+  height: 3em;
+  width: 3em;
+  border: #aaa .1em solid;
+  outline: .1em solid white;
+  z-index: 1;
+  position: relative;
+  top:1em;
+}
+.modescontainer .primarycolor {
+  height: 3em;
+  width: 3em;
+  border: #aaa .1em solid;
+  outline: .1em solid white;
+  z-index: 2;
+  position: relative;
+  left:1em;
+}
+.modescontainer .secondarycolor {
+  height: 3em;
+  width: 3em;
+  border: #aaa .1em solid;
+  outline: .1em solid white;
+}
+.modescontainer .historycolorlist {
+  display: flex;
+}
+.modescontainer .historycolor {
+  height: 1em;
+  width: 1em;
+  border-radius: 15%;
+  margin-left: .2em;
+  border: #aaa .1em solid;
+  outline: .1em solid white;
+  cursor: pointer;
+}
+.modescontainer .palettecolorlist {
+  display: flex;
+}
+.modescontainer .palettecolor {
+  height: 1.25em;
+  width: 1.25em;
+  border-radius: 15%;
+  margin-left: .2em;
+  border: #aaa .1em solid;
+  outline: .1em solid white;
+  cursor: pointer;
+}
+.randomicon{
+  cursor: pointer;
+}
+.switchicon{
+  position: relative;
+    left: -2em;
+    cursor: pointer;
+}
+
+.drawing-console {
+  position: absolute;
+
+  width: 200px;
+  text-align: left;
+  padding: 15px;
+  top: 0;
+  right: 0;
+  background-color: white;
+}
+.cursor-container {
+  z-index: 1;
+  display: block;
+  width: 0;
+  height: 0;
+}
+.cursor {
+  content: '';
+  display: block;
+  height: 1em;
+  width: 1em;
+}
+.cursor.select {
+  transform: translate(-0.5em, -0.1em);
+}
+.cursor.multiselect {
+  transform: translate(-0.5em, -0.1em);
+}
+.cursor.draw {    
+  transform: translate(-0em, -1em);
+}
+
+.grid-container {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  width: 100em;
+  height: 100em;
+  border-right: 1px #333 solid;
+  border-bottom: 1px #333 solid;
+  box-sizing: border-box;
+}
+
+.grid {
+  cursor: none;
+  width: 100%;
+  height: 100%;
+}
+.grid-container .sub-grid-lines {
+  width: 100%;
+  height: 100%;
+}
+.grid-container .grid-lines {
+  width: 100%;
+  height: 100%;
+}
+.grid-container.lines-on .grid-lines {
+  background-size: 5em 5em;
+  background-image:
+    linear-gradient(to right, #333 1px, transparent 1px),
+    linear-gradient(to bottom, #333 1px, transparent 1px);
+}
+.grid-container.lines-on .sub-grid-lines {
+  background-size: 1em 1em;
+  background-image:
+    linear-gradient(to right, #aaa 1px, transparent 1px),
+    linear-gradient(to bottom, #aaa 1px, transparent 1px);
+}
+
+.grid .shape {
+  display: block;
+}
+.grid .drawing-container {
+  position: absolute;
+}
+.grid .drawing-container.selected {
+  outline: solid .2em rgba(98, 140, 189, 1);
+  background-color: rgba(98, 140, 189, 0.5);
+}
+
+.drawing {
+  position: absolute;
+}
+.drawn {
+  position: absolute;
+}
