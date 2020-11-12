@@ -113,10 +113,17 @@ code {
   outline: .1em solid white;
   cursor: pointer;
 }
-.modescontainer .palettecolorlist {
+.palettelist{
+  display: flex;
+  flex-wrap: wrap;
+}
+.palettelist .ui.card.palettelistcard{
+  margin:.25em
+}
+.palettecolorlist {
   display: flex;
 }
-.modescontainer .palettecolor {
+ .palettecolorlist .palettecolor {
   height: 1.25em;
   width: 1.25em;
   border-radius: 15%;

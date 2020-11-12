@@ -4,7 +4,7 @@ import {palettes} from '../palettes';
 
 import { RgbaStringColorPicker } from "react-colorful";
 import "react-colorful/dist/index.css";
-import { Container, Popup, Button, Icon } from 'semantic-ui-react'
+import { Header, Modal, Container, Popup, Card, CardContent, Button, Icon } from 'semantic-ui-react'
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
@@ -24,7 +24,8 @@ const ColorPicker = (props) => {
     const [secondaryColor, setSecondaryColor] = React.useState(colorHistory[colorPalette.length-1]);
     const [selection, setSelection] = React.useState(color);
     const [secondarySelection, setSecondarySelection] = React.useState(secondaryColor);
-    
+    const [open, setOpen] = React.useState(false)
+
     const randomPalette = (()=>{
         setColorPalette(convertColors(palettes[getRandomInt(palettes.length)]));
     })
@@ -45,7 +46,12 @@ const ColorPicker = (props) => {
     const colorHistoryClick = ((historyColor) => {
         setColor(historyColor);
     });
-    
+
+    const paletteClick = ((newPalette) => {
+        setColorPalette(newPalette);
+        setOpen(false);
+    });  
+
     const switchColors = (() =>{
     
         const secColor = secondaryColor;
@@ -98,7 +104,45 @@ const ColorPicker = (props) => {
             />
 
             <div className="palettecolorlist">
-                <Icon name='paint brush' />:
+            <Modal
+                basic
+                onClose={() => setOpen(false)}
+                onOpen={() => setOpen(true)}
+                open={open}
+                size='small'
+                trigger={<Icon name='paint brush' />}
+                >
+                <Header icon>
+                    <Icon name='paint brush' />
+                    palettes
+                </Header>
+                <Modal.Content>
+                    <div className="palettelist">
+                        {palettes
+                            .map((p, index) => (                    
+                            <Card className="palettelistcard">
+                            <CardContent onClick={() => paletteClick(convertColors(p))} className="palettecolorlist">
+
+                                {convertColors(p).map((pColor, index) => (
+                                        <div 
+                                            key={index} 
+                                            
+                                            name={"square full"} 
+                                            style={{backgroundColor:pColor}} 
+                                            className="palettecolor"
+                                        />                        
+                                    ))}
+                            </CardContent>
+                            </Card>
+                            ))
+                        }
+                    </div>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button basic onClick={() => setOpen(false)}>
+                    </Button>
+                </Modal.Actions>
+                </Modal>:
                 {colorPalette
                     .map((pColor, index) => (
                         <div 

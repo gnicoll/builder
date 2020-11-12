@@ -39,7 +39,7 @@ function App() {
           <Modes mode={mode} color={color} broadcastMode={setMode} keyPressed={keyPressed} />
           {mode?.name==='draw'?
           <>
-          <Shapes broadcastMode={setMode} broadcastShape={setShape} color={color} keyPressed={keyPressed} />
+          <Shapes broadcastMode={setMode} broadcastCommand={setCommand} broadcastShape={setShape} color={color} keyPressed={keyPressed} />
           </>
           :null}
           {mode?.name==='select'?

@@ -7,8 +7,9 @@ const Shapes = (props) => {
     const [shape, setShape] = React.useState(shapes.filter((s)=>s.active)[0])
     
     useEffect(() => {
-        props.broadcastShape(shape)
-    }, [props.broadcastShape, shape]);
+        props.broadcastShape(shape);
+        props.broadcastCommand({"name":"draw"});
+    }, [props.broadcastShape, props.broadcastCommand, shape]);
     
     const styleInjector = (style)=>{
         let copiedStyle = JSON.parse(JSON.stringify(style));
