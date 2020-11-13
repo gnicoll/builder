@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
-import {commands, selectActions} from '../config';
+import {selectCommands, selectActions} from '../config';
 import { Button, Icon, Popup } from 'semantic-ui-react'
 
 const SelectCommands = (props) => {
     
-    const [command, setCommand] = React.useState(commands[0][0]);
+    const [command, setCommand] = React.useState(selectCommands[0][0]);
 
     const commandClick = ((c) => {
         setCommand(JSON.parse(JSON.stringify(c)));
     });
 
     useEffect(() => {   
-        for (const commandSet of commands) {
+        for (const commandSet of selectCommands) {
             for (const c of commandSet) {
                 if (props.keyPressed.key===c.key && 
                     (c.ctrlKey===undefined || 
@@ -29,10 +29,8 @@ const SelectCommands = (props) => {
     return (
         <div className="modescontainer" >
             <div >   
-            {props.selection}                 
             <div class="ui divider"></div>
-
-            {commands
+            {selectCommands
                 .map((commandSet, index) => (
                     <div>
                     {commandSet
@@ -47,10 +45,8 @@ const SelectCommands = (props) => {
                             </Button>
                         ))}
                     </div>
-
                 ))
             }
-            
             </div>
         </div>
     )

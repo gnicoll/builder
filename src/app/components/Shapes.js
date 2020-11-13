@@ -2,9 +2,19 @@ import React, { useEffect } from 'react';
 import {shapes, modes} from '../config';
 import { Button, Icon, Popup } from 'semantic-ui-react'
 
+const getActiveShape = ()=>{
+    for (const shapeSet of shapes) {
+        for (const s of shapeSet) {
+            if (s.active)
+                return s;
+        }
+    }
+    return shapes[0][0];
+}
+
 const Shapes = (props) => {
     
-    const [shape, setShape] = React.useState(shapes.filter((s)=>s.active)[0])
+    const [shape, setShape] = React.useState(getActiveShape())
     
     useEffect(() => {
         props.broadcastShape(shape);
@@ -24,18 +34,30 @@ const Shapes = (props) => {
         return copiedStyle;
     }
 
+    const activeShape = (newshape)=>{
+        for (const shapeSet of shapes) {
+            for (const s of shapeSet) {
+                s.active = s.name===newshape.name;    
+            }
+        }
+        setShape(newshape);
+    }
+
     return (
         <div className="modescontainer" >
         
             <div class="ui divider"></div>
-            <div >
             {shapes
-                .map((s, index) => (
-                    <Button active={s.name===shape?.name} icon key={index} className="shapeBtn" onClick={() => setShape(s)} >
-                        <div className="shape " style={styleInjector(s.style[0])} />
-                    </Button>
+                .map((shapeSet, index) => (
+                <div >
+                {    shapeSet.map((s, index) => (
+                        <Button active={s.name===shape?.name} icon key={index} className="shapeBtn" onClick={() => activeShape(s)} >
+                            <div className="shape " style={styleInjector(s.style[0])} />
+                        </Button>
+                    ))}
+            </div>
                 ))
-            }</div>
+            }
         </div>
     )
 

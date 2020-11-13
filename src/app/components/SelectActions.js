@@ -23,7 +23,6 @@ const SelectActions = (props) => {
     return (
         <div className="modescontainer" >
             <div >   
-            {props.selection}                 
             <div class="ui divider"></div>
             {selectActions
                 .map((actionSet, index) => (
@@ -32,6 +31,7 @@ const SelectActions = (props) => {
                         .map((a, index) => (
                             <Button 
                                 icon 
+                                disabled={props.selection===0}
                                 key={index} 
                                 className="actionBtn" 
                                 onClick={() => actionClick(a)} >

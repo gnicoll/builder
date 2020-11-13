@@ -13,7 +13,7 @@ export const modes = [
   },
 ];
 
-export const commands = [
+export const selectCommands = [
   [{
     name: 'select',
     key:'s',
@@ -70,23 +70,17 @@ export const selectActions = [
   }],
 ];
 
-export const colors = [
-  {
-    name: 'white',
-    color: '#ffffff'
-  },
-  {
-    name: 'black',
-    color: '#000000'
-  },
-  {
-    name: 'grey',
-    color: '#888888'
-  },
-];
-
 export const shapes = [
-  {
+  [{
+    name: 'rectangle',
+    style: [{
+      'backgroundColor':'{color}',
+      'width': '{width}',
+      'height': '{height}',
+    }],
+    active:false
+  }],
+  [{
     name: 'circle',
     style: [{
       'borderRadius':'50%',
@@ -95,8 +89,8 @@ export const shapes = [
       'height': '{height}',
     }],
     active:true
-  },
-  {
+  }],
+  [{
     name: 'halfcircle',
     style: [{
       'borderRadius':'50% / 100% 100% 0 0',
@@ -148,8 +142,8 @@ export const shapes = [
       },
     ],
     active:false
-  },
-  {
+  }],
+  [{
     name: 'quartercircle',
     style: [
       {
@@ -180,26 +174,6 @@ export const shapes = [
     active:false
   },
   {
-    name: 'rectangle',
-    style: [{
-      'backgroundColor':'{color}',
-      'width': '{width}',
-      'height': '{height}',
-    }],
-    active:false
-  },
-  {
-    name: 'triangle-up',
-    style: [{
-      'width': '{width}',
-      'height': '{height}',
-      'borderLeft': '{width/2} solid transparent',
-      'borderRight': '{width/2} solid transparent',
-      'borderBottom': '{height} solid {color}',
-    }],
-    active:false
-  },
-  {
     name: 'cone',
     style: [{
       borderRadius: '50%',
@@ -210,5 +184,16 @@ export const shapes = [
       'borderTop': '{height} solid {color}',
     }],
     active:false
-  },
+  }],
+  [{
+    name: 'triangle-up',
+    style: [{
+      'width': '{width}',
+      'height': '{height}',
+      'borderLeft': '{width/2} solid transparent',
+      'borderRight': '{width/2} solid transparent',
+      'borderBottom': '{height} solid {color}',
+    }],
+    active:false
+  }],
 ];
