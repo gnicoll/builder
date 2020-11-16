@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {commands, actions} from '../config';
+import {commands, actions} from '../config/commandsAndActions';
 import { Button, Icon, Popup } from 'semantic-ui-react'
 
 const Actions = (props) => {

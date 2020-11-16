@@ -1,75 +1,3 @@
-export const modes = [
-  {
-    name: 'draw',
-    key:'d',
-    iconname: 'pencil',
-    active:true
-  },
-  {
-    name: 'select',
-    key:'s',
-    iconname: 'hand pointer',
-    active:false
-  },
-];
-
-export const selectCommands = [
-  [{
-    name: 'select',
-    key:'s',
-    iconname: 'hand pointer',
-    active:true,
-  },
-  {
-    name: 'multiselect',
-    key:'m',
-    iconname: 'hand pointer outline',
-    active:false,
-  }],
-];
-export const actions = [
-  [{
-    name: 'linestoggle',
-    key:'l',
-    iconname: 'grid layout',
-  },{
-    name: 'console',
-    key:'c',
-    iconname: 'terminal',
-  }],
-];
-
-export const selectActions = [
-  [{
-    name: 'delete',
-    key:'Delete',
-    iconname: 'delete',
-  }],
-  [ 
-    {
-      name: 'up',
-      key:'ArrowUp',
-      ctrlKey: true,
-      iconname: 'arrow up',
-    },
-    {
-      name: 'down',
-      key:'ArrowDown',
-      ctrlKey: true,
-      iconname: 'arrow down',
-    },
-  ],
-  [{
-    name: 'group',
-    key:'g',
-    iconname: 'object group',
-  },{
-    name: 'ungroup',
-    key:'u',
-    iconname: 'object ungroup',
-  }],
-];
-
 export const shapes = [
   [{
     name: 'rectangle',
@@ -78,7 +6,8 @@ export const shapes = [
       'width': '{width}',
       'height': '{height}',
     }],
-    active:false
+    active:true,
+    saveKey:'r',
   }],
   [{
     name: 'circle',
@@ -88,7 +17,8 @@ export const shapes = [
       'width': '{width}',
       'height': '{height}',
     }],
-    active:true
+    active:false,
+    saveKey:'c',
   }],
   [{
     name: 'halfcircle',
@@ -98,7 +28,8 @@ export const shapes = [
       'width': '{width}',
       'height': '{height}',
     }],
-    active:false
+    active:false,
+    saveKey:'h',
   },
   {
     name: 'halfcircleangle',
@@ -141,7 +72,8 @@ export const shapes = [
         'height': '{height}',
       },
     ],
-    active:false
+    active:false,
+    saveKey:'a',
   }],
   [{
     name: 'quartercircle',
@@ -171,7 +103,8 @@ export const shapes = [
       'height': '{height}',
       },
     ],
-    active:false
+    active:false,
+    saveKey:'q',
   },
   {
     name: 'cone',
@@ -183,10 +116,11 @@ export const shapes = [
       'borderRight': '{width} solid transparent',
       'borderTop': '{height} solid {color}',
     }],
-    active:false
+    active:false,
+    saveKey:'w',
   }],
   [{
-    name: 'triangle-up',
+    name: 'triangle',
     style: [{
       'width': '{width}',
       'height': '{height}',
@@ -194,6 +128,7 @@ export const shapes = [
       'borderRight': '{width/2} solid transparent',
       'borderBottom': '{height} solid {color}',
     }],
-    active:false
+    active:false,
+    saveKey:'t',
   }],
 ];

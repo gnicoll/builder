@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {commands, selectActions} from '../config';
+import {commands, selectActions,multiSelectActions} from '../config/commandsAndActions';
 import { Button, Icon, Popup } from 'semantic-ui-react'
 
 const SelectActions = (props) => {
@@ -13,7 +13,9 @@ const SelectActions = (props) => {
             for (const a of actionSet) {
                 if (props.keyPressed.key===a.key && 
                     (a.ctrlKey===undefined || 
-                     props.keyPressed.ctrlKey === a.ctrlKey)) {
+                     props.keyPressed.ctrlKey === a.ctrlKey) && 
+                    (a.shiftKey===undefined || 
+                    props.keyPressed.shiftKey === a.shiftKey)) {
                     actionClick(a);
                 }    
             }
@@ -39,7 +41,23 @@ const SelectActions = (props) => {
                             </Button>
                         ))}
                     </div>
-
+                ))
+            }           
+            {multiSelectActions
+                .map((actionSet, index) => (
+                    <div>
+                    {actionSet
+                        .map((a, index) => (
+                            <Button 
+                                icon 
+                                disabled={props.selection<=1}
+                                key={index} 
+                                className="actionBtn" 
+                                onClick={() => actionClick(a)} >
+                                <Icon name={a.iconname} className="action " />
+                            </Button>
+                        ))}
+                    </div>
                 ))
             }
             </div>

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import 'semantic-ui-css/semantic.min.css'
 import '../App.css';
+import AppMenu from './components/AppMenu'
 import Grid from './components/Grid'
 import Modes from './components/Modes'
 import Shapes from './components/Shapes'
@@ -16,6 +17,7 @@ function App() {
   const [action, setAction] = React.useState(null);
   const [shape, setShape] = React.useState(null);
   const [color, setColor] = React.useState(null);
+  const [code, setCode] = React.useState("r|rgba(79,93,117,1)|22,16|13,7|22,16|&r|rgba(45,49,66,1)|12,6|12,6|17,11|&");
   
   const [keyPressed, setKeyPressed] =  React.useState({});
 
@@ -38,6 +40,9 @@ function App() {
 
   return (
     <div className="App builder">
+      <AppMenu 
+          code={code} 
+          broadcastCode={setCode} />
       <div className="ui-panes">
         <div className="tools-pane pane">
           <Modes mode={mode} color={color} broadcastMode={setMode} keyPressed={keyPressed} />
@@ -60,7 +65,17 @@ function App() {
         
       </div>
       <div className="grid-pane">
-        <Grid mode={mode} broadcastSelection={setSelection} action={action} command={command} shape={shape} color={color} keyPressed={keyPressed} />
+        <Grid 
+          mode={mode} 
+          broadcastSelection={setSelection} 
+          broadcastCode={setCode} 
+          code={code} 
+          action={action} 
+          command={command} 
+          shape={shape} 
+          color={color} 
+          keyPressed={keyPressed} 
+        />
       </div>
     </div>
   );

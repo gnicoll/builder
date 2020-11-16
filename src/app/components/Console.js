@@ -20,10 +20,21 @@ const Console = (props) => {
                 <div>destination : {props.drawn.filter((shape)=>shape.selected)[0].destinationLeft},{props.drawn.filter((shape)=>shape.selected)[0].destinationTop}</div>
             </>
             :null}
-            <div><strong>selected</strong></div>
+            <div><strong>Mouse</strong></div>
             <div>mouse : {props.mousePosition.left},{props.mousePosition.top}</div>
             <div>mouse : {Math.round(props.mousePosition.left/16)+'em'},{Math.round(props.mousePosition.top/16)+'em'}</div>
             
+            
+            {props.selecting.selecting?
+            <>
+                <div><strong>selecting</strong></div>
+                <div>selected : {props.selecting.selected.map(((drawing, index) => (
+                    <span>{drawing.sort},</span>
+                )))}</div>
+                <div>start : {props.selecting.startLeft},{props.selecting.startTop}</div>
+                <div>end : {props.selecting.endLeft},{props.selecting.endTop}</div>
+            </>
+            :null}
             
             {props.drawing.drawing?
             <>

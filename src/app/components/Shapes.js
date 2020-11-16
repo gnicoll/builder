@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {shapes, modes} from '../config';
+import {shapes} from '../config/shapes';
 import { Button, Icon, Popup } from 'semantic-ui-react'
 
 const getActiveShape = ()=>{

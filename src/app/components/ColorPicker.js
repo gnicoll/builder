@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import {colors} from '../config';
-import {palettes} from '../palettes';
+import {colors} from '../config/commandsAndActions';
+import {palettes} from '../config/palettes';
 
 import { RgbaStringColorPicker } from "react-colorful";
 import "react-colorful/dist/index.css";
@@ -149,7 +149,7 @@ const ColorPicker = (props) => {
             </div>
         </Container>
             <div className="colors">
-            
+
             {colorPalette.includes(color)?
                 <Icon style={{color:color}} name='minus square' onClick={()=>colorPalletClick(color)}/>
             :   <Icon style={{color:color}} name='plus square' onClick={()=>colorPalletClick(color)}/>

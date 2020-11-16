@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {modes} from '../config';
+import {modes} from '../config/modes';
 import { Button, Icon, Popup } from 'semantic-ui-react'
 
 const Modes = (props) => {
@@ -15,12 +15,13 @@ const Modes = (props) => {
 
     }, [props.keyPressed]);
 
-    useEffect(() => {
+
+    useEffect(() => {/*
         modes.forEach(mode => {
             if (mode.key === 'd') {
                 setMode(mode);
             }
-        });  
+        });  */
     }, [props.color]);
 
     useEffect(() => {
