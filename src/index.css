@@ -193,10 +193,14 @@ code {
   z-index: 1;
   width: 100em;
   height: 100em;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.grid-container .grid-lines {
   border-right: 1px #333 solid;
   border-bottom: 1px #333 solid;
-  box-sizing: border-box;
 }
+
 
 .grid {
   cursor: none;

@@ -9,6 +9,15 @@ import ColorPicker from './components/ColorPicker'
 import Actions from './components/Actions' 
 import SelectCommands from './components/SelectCommands';
 import SelectActions from './components/SelectActions';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+  useHistory,
+  Redirect
+} from "react-router-dom";
 
 function App() {
   const [mode, setMode] = React.useState(null);
@@ -17,8 +26,18 @@ function App() {
   const [action, setAction] = React.useState(null);
   const [shape, setShape] = React.useState(null);
   const [color, setColor] = React.useState(null);
-  const [code, setCode] = React.useState("r|rgba(79,93,117,1)|22,16|13,7|22,16|&r|rgba(45,49,66,1)|12,6|12,6|17,11|&");
   
+  let { codestring } = useParams();
+  const [code, setCode] = React.useState(codestring);
+  
+  let history = useHistory();
+
+  useEffect(() => {
+    if (code !== undefined)
+      history.push(""+code);
+  }, [code, history]);
+  
+
   const [keyPressed, setKeyPressed] =  React.useState({});
 
   useEffect(() => {
@@ -40,9 +59,7 @@ function App() {
 
   return (
     <div className="App builder">
-      <AppMenu 
-          code={code} 
-          broadcastCode={setCode} />
+      <AppMenu />
       <div className="ui-panes">
         <div className="tools-pane pane">
           <Modes mode={mode} color={color} broadcastMode={setMode} keyPressed={keyPressed} />
