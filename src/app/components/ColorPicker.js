@@ -112,19 +112,21 @@ const ColorPicker = (props) => {
                     <div className="palettelist">
                         {palettes
                             .map((p, index) => (                    
-                            <Card className="palettelistcard">
-                            <CardContent onClick={() => paletteClick(convertColors(p))} className="palettecolorlist">
+                            <Card 
+                                key={index} 
+                                className="palettelistcard">
+                                <CardContent onClick={() => paletteClick(convertColors(p))} className="palettecolorlist">
 
-                                {convertColors(p).map((pColor, index) => (
-                                        <div 
-                                            key={index} 
-                                            
-                                            name={"square full"} 
-                                            style={{backgroundColor:pColor}} 
-                                            className="palettecolor"
-                                        />                        
-                                    ))}
-                            </CardContent>
+                                    {convertColors(p).map((pColor, index) => (
+                                            <div 
+                                                key={index} 
+                                                
+                                                name={"square full"} 
+                                                style={{backgroundColor:pColor}} 
+                                                className="palettecolor"
+                                            />                        
+                                        ))}
+                                </CardContent>
                             </Card>
                             ))
                         }
@@ -220,6 +222,23 @@ const ColorPicker = (props) => {
                     }
                 </div>
             </Container>
+            <Container>           
+                <div className="historycolorlist">
+                    <Icon name='clock outline' />
+                    {props.usedColors
+                        .map((usedColor, index) => (
+                            <div 
+                                key={index} 
+                                onClick={() => colorHistoryClick(usedColor)} 
+                                name={"square full"} 
+                                style={{backgroundColor:usedColor}} 
+                                className="historycolor"
+                            />                        
+                        ))
+                    }
+                </div>
+            </Container>
+            
         </Container>
     )
 

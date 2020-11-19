@@ -24,7 +24,7 @@ const Actions = (props) => {
         <div className="modescontainer" >
             <div >   
             {props.selection}                 
-            <div class="ui divider"></div>
+            <div className="ui divider"></div>
 
             {actions
                 .map((actionSet, index) => (

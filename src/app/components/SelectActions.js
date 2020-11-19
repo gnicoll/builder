@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {commands, selectActions,multiSelectActions} from '../config/commandsAndActions';
-import { Button, Icon, Popup } from 'semantic-ui-react'
+import { Button, Icon, Label, Segment, Popup } from 'semantic-ui-react'
 
 const SelectActions = (props) => {
     
@@ -26,28 +26,37 @@ const SelectActions = (props) => {
         <div className="modescontainer" >
             <div >   
             <div class="ui divider"></div>
-            {selectActions
+                {selectActions
                 .map((actionSet, index) => (
                     <div>
                     {actionSet
                         .map((a, index) => (
-                            <Button 
-                                icon 
-                                disabled={props.selection===0}
-                                key={index} 
-                                className="actionBtn" 
-                                onClick={() => actionClick(a)} >
-                                <Icon name={a.iconname} className="action " />
-                            </Button>
+                            <Popup
+                                trigger={
+                                <Button 
+                                    icon 
+                                    disabled={props.selection===0}
+                                    key={index} 
+                                    className="actionBtn" 
+                                    onClick={() => actionClick(a)} >
+                                    <Icon name={a.iconname} className="action " />
+                                </Button>
+                                }
+                                content={a.name +' ('+a.key+')'}
+                                position='bottom left'
+                            />
                         ))}
                     </div>
                 ))
-            }           
+            }  
+            <div class="ui divider"></div>         
             {multiSelectActions
                 .map((actionSet, index) => (
                     <div>
                     {actionSet
                         .map((a, index) => (
+                            <Popup
+                                trigger={
                             <Button 
                                 icon 
                                 disabled={props.selection<=1}
@@ -56,6 +65,10 @@ const SelectActions = (props) => {
                                 onClick={() => actionClick(a)} >
                                 <Icon name={a.iconname} className="action " />
                             </Button>
+                                }
+                                content={a.name +' ('+a.key+')'}
+                                position='bottom left'
+                            />
                         ))}
                     </div>
                 ))

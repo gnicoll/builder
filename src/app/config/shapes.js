@@ -23,6 +23,27 @@ export const shapes = [
   [{
     name: 'halfcircle',
     style: [{
+      'borderRadius':'50% / 0 0 100% 100%',
+      /*
+    border-top-left-radius: 50% 0px;
+    border-top-right-radius: 50% 0px;
+    border-bottom-right-radius: 50% 100%;
+    border-bottom-left-radius: 50% 100%;
+    */
+      'backgroundColor':'{color}',
+      'width': '{width}',
+      'height': '{height}',
+    },{
+      'borderRadius':'100% 0% 0% 100% / 50% 0 0 50%',
+      'backgroundColor':'{color}',
+      'width': '{width}',
+      'height': '{height}',
+    },{
+      'borderRadius':'0% 100% 100% 0%/ 0 50% 50% 0',
+      'backgroundColor':'{color}',
+      'width': '{width}',
+      'height': '{height}',
+    },{
       'borderRadius':'50% / 100% 100% 0 0',
       'backgroundColor':'{color}',
       'width': '{width}',
@@ -84,12 +105,12 @@ export const shapes = [
         'width': '{width}',
         'height': '{height}',
       },
-                  {
-                  'borderRadius':'0 0 0 100%',
-                  'backgroundColor':'{color}',
-                  'width': '{width}',
-                  'height': '{height}',
-                  },
+      {
+      'borderRadius':'0 0 0 100%',
+      'backgroundColor':'{color}',
+      'width': '{width}',
+      'height': '{height}',
+      },
       {
       'borderRadius':'0 100% 0 0',
       'backgroundColor':'{color}',
@@ -105,30 +126,83 @@ export const shapes = [
     ],
     active:false,
     saveKey:'q',
-  },
-  {
-    name: 'cone',
-    style: [{
-      borderRadius: '50%',
-      'width': '{width}',
-      'height': '{height}',
-      'borderLeft': '{width} solid transparent',
-      'borderRight': '{width} solid transparent',
-      'borderTop': '{height} solid {color}',
-    }],
-    active:false,
-    saveKey:'w',
   }],
   [{
     name: 'triangle',
-    style: [{
-      'width': '{width}',
-      'height': '{height}',
-      'borderLeft': '{width/2} solid transparent',
-      'borderRight': '{width/2} solid transparent',
-      'borderBottom': '{height} solid {color}',
-    }],
+    style: [
+      {
+        'width': '{width}',
+        'height': '{height}',
+        'borderLeft': '{height/2} solid {color}',
+        'borderRight': 'none',
+        'borderBottom': '{width} solid transparent',
+        'borderTop': '{height/2} solid transparent',
+      },
+      {
+        'width': '{width}',
+        'height': '{height}',
+        'borderLeft': '{width/2} solid transparent',
+        'borderRight': '{width/2} solid transparent',
+        'borderBottom': '{height} solid {color}',
+        'borderTop': 'none',
+      },
+      {
+        'width': '{width}',
+        'height': '{height}',
+        'borderLeft': '{width/2} solid transparent',
+        'borderRight': '{width/2} solid transparent',
+        'borderBottom': '{height} solid {color}',
+        'borderTop': 'none',
+      },
+      {
+        'width': '{width}',
+        'height': '{height}',
+        'borderLeft': '{width/2} solid transparent',
+        'borderRight': '{width/2} solid transparent',
+        'borderBottom': '{height} solid {color}',
+        'borderTop': 'none',
+      },
+    ],
     active:false,
     saveKey:'t',
+  }],
+  [{
+    name: 'triangleangled',
+    style: [
+      {
+        'width': '{width}',
+        'height': '{height}',
+        'borderRight': '{width} solid transparent',
+        'borderTop': '{height} solid {color}',
+        'borderLeft': 'none',
+        'borderBottom': 'none',
+      },
+      {
+        'width': '{width}',
+        'height': '{height}',
+        'borderLeft': '{width} solid transparent',
+        'borderTop': '{height} solid {color}',
+        'borderRight': 'none',
+        'borderBottom': 'none',
+      },
+      {
+        'width': '{width}',
+        'height': '{height}',
+        'borderLeft': '{width} solid transparent',
+        'borderBottom': '{height} solid {color}',
+        'borderTop': 'none',
+        'borderRight': 'none',
+      },
+      {
+        'width': '{width}',
+        'height': '{height}',
+        'borderRight': '{width} solid transparent',
+        'borderBottom': '{height} solid {color}',
+        'borderLeft': 'none',
+        'borderTop': 'none',
+      },
+    ],
+    active:false,
+    saveKey:'p',
   }],
 ];

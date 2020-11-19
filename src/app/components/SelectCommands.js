@@ -35,6 +35,8 @@ const SelectCommands = (props) => {
                     <div>
                     {commandSet
                         .map((c, index) => (
+                            <Popup
+                                trigger={
                             <Button 
                                 active={c.name===command?.name} 
                                 icon 
@@ -43,6 +45,10 @@ const SelectCommands = (props) => {
                                 onClick={() => commandClick(c)} >
                                 <Icon name={c.iconname} className="command " />
                             </Button>
+                                }
+                                content={c.name +' ('+c.key+')'}
+                                position='bottom left'
+                            />
                         ))}
                     </div>
                 ))

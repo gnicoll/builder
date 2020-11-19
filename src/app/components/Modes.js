@@ -34,13 +34,15 @@ const Modes = (props) => {
                 <Button.Group>
                 {modes
                     .map((m, index) => (
-                        <Button active={m.key===mode?.key} icon key={index} className="mode" onClick={() => setMode(m)} >
                             <Popup
-                                trigger={<Icon name={m.iconname} />}
+                                trigger={
+                        <Button active={m.key===mode?.key} icon key={index} className="mode" onClick={() => setMode(m)} >
+                                <Icon name={m.iconname} />
+                        </Button>
+                                }
                                 content={m.name +' ('+m.key+')'}
                                 position='bottom left'
                             />
-                        </Button>
                     ))
                 }
                 </Button.Group>

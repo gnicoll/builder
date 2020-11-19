@@ -22,7 +22,8 @@ import {
 function App() {
   const [mode, setMode] = React.useState(null);
   const [command, setCommand] = React.useState(null);
-  const [selection, setSelection] = React.useState(null);
+  const [usedColors, setUsedColors] = React.useState([]);
+  const [selectionLength, setSelectionLength] = React.useState(null);
   const [action, setAction] = React.useState(null);
   const [shape, setShape] = React.useState(null);
   const [color, setColor] = React.useState(null);
@@ -59,7 +60,7 @@ function App() {
 
   return (
     <div className="App builder">
-      <AppMenu />
+      <AppMenu selection={selectionLength} keyPressed={keyPressed} broadcastAction={setAction}  />
       <div className="ui-panes">
         <div className="tools-pane pane">
           <Modes mode={mode} color={color} broadcastMode={setMode} keyPressed={keyPressed} />
@@ -70,21 +71,22 @@ function App() {
           :null}
           {mode?.name==='select'?
           <>
-          <SelectCommands selection={selection} keyPressed={keyPressed} broadcastAction={setAction} broadcastCommand={setCommand}  />
-          <SelectActions selection={selection} keyPressed={keyPressed} broadcastAction={setAction}  />
+          <SelectCommands selection={selectionLength} keyPressed={keyPressed} broadcastAction={setAction} broadcastCommand={setCommand}  />
+          <SelectActions selection={selectionLength} keyPressed={keyPressed} broadcastAction={setAction}  />
 
           </>
           :null}
           <Actions keyPressed={keyPressed} broadcastAction={setAction} />
 
-          <ColorPicker keyPressed={keyPressed}  broadcastColor={setColor} />
+          <ColorPicker keyPressed={keyPressed} usedColors={usedColors} broadcastColor={setColor} />
         </div>
         
       </div>
       <div className="grid-pane">
         <Grid 
           mode={mode} 
-          broadcastSelection={setSelection} 
+          broadcastSelectionLength={setSelectionLength} 
+          broadcastUsedColors={setUsedColors}
           broadcastCode={setCode} 
           code={code} 
           action={action} 

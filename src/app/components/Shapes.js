@@ -49,13 +49,13 @@ const Shapes = (props) => {
             <div class="ui divider"></div>
             {shapes
                 .map((shapeSet, index) => (
-                <div >
-                {    shapeSet.map((s, index) => (
-                        <Button active={s.name===shape?.name} icon key={index} className="shapeBtn" onClick={() => activeShape(s)} >
+                <div key={index} >
+                {    shapeSet.map((s, indexj) => (
+                        <Button active={s.name===shape?.name} icon key={indexj} className="shapeBtn" onClick={() => activeShape(s)} >
                             <div className="shape " style={styleInjector(s.style[0])} />
                         </Button>
                     ))}
-            </div>
+                </div>
                 ))
             }
         </div>
