@@ -8,6 +8,101 @@ export const shapes = [
     }],
     active:true,
     saveKey:'r',
+  },{
+    name: 'rounded rectangle',
+    style: [{
+      'backgroundColor':'{color}',
+      'width': '{width}',
+      'height': '{height}',
+      'borderRadius': '.25em',
+    }],
+    active:false,
+    saveKey:'R',
+  },
+  {
+    name: 'rhombus',
+    style: [{
+      'backgroundColor':'{color}',
+      'width': '{width}',
+      'height': '{height}',
+      'clip-path': 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+    }],
+    active:false,
+    saveKey:'w',
+  }],
+  [
+    {
+      name: 'parallelogram',
+      style: [
+        {
+        'backgroundColor':'{color}',
+        'width': '{width}',
+        'height': '{height}',
+        'clip-path': 'polygon(50% 0%, 100% 0%, 50% 100%, 0% 100%)',
+        },
+        {
+          'backgroundColor':'{color}',
+          'width': '{width}',
+          'height': '{height}',
+          'clip-path': 'polygon( 50% 100%, 100% 100%, 50% 0%, 0% 0%)',
+        },
+        {
+        'backgroundColor':'{color}',
+        'width': '{width}',
+        'height': '{height}',
+        'clip-path': 'polygon(0% 0%, 50% 0%, 100% 100%, 50% 100%)',
+        },
+        {
+        'backgroundColor':'{color}',
+        'width': '{width}',
+        'height': '{height}',
+        'clip-path': 'polygon(50% 0%, 100% 0%, 50% 100%, 0% 100%)',
+        }
+      ],
+      active:false,
+      saveKey:'l',
+    },
+    {
+      name: 'parallelogram rotated',
+      style: [
+        {
+        'backgroundColor':'{color}',
+        'width': '{width}',
+        'height': '{height}',
+        'clip-path': 'polygon(0% 50%, 100% 0%, 100% 50%, 0% 100%)',
+        },
+        {
+          'backgroundColor':'{color}',
+          'width': '{width}',
+          'height': '{height}',
+          'clip-path': 'polygon(0% 0%, 100% 50%, 100% 100%, 0% 50%)',
+        },
+        {
+        'backgroundColor':'{color}',
+        'width': '{width}',
+        'height': '{height}',
+        'clip-path': 'polygon(0% 0%, 100% 50%, 100% 100%, 0% 50%)',
+        },
+        {
+        'backgroundColor':'{color}',
+        'width': '{width}',
+        'height': '{height}',
+        'clip-path': 'polygon(0% 50%, 100% 0%, 100% 50%, 0% 100%)',
+        }
+      ],
+      active:false,
+      saveKey:'L',
+    },],
+  [{
+    name: 'hexagon',
+    style: [{
+      'backgroundColor':'{color}',
+      'width': '{width}',
+      'height': '{height}',
+      'clip-path': 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+    }],
+    active:false,
+    saveKey:'j',
   }],
   [{
     name: 'circle',
@@ -19,32 +114,59 @@ export const shapes = [
     }],
     active:false,
     saveKey:'c',
-  }],
-  [{
+  },{
     name: 'halfcircle',
-    style: [{
-      'borderRadius':'50% / 0 0 100% 100%',
-      /*
-    border-top-left-radius: 50% 0px;
-    border-top-right-radius: 50% 0px;
-    border-bottom-right-radius: 50% 100%;
-    border-bottom-left-radius: 50% 100%;
-    */
-      'backgroundColor':'{color}',
-      'width': '{width}',
-      'height': '{height}',
-    },{
+    style: [
+      {
+        'borderRadius':'50% / 0 0 100% 100%',
+        'backgroundColor':'{color}',
+        'width': '{width}',
+        'height': '{height}',
+      },
+      {
+        'borderRadius':'50% / 0 0 100% 100%',
+        'backgroundColor':'{color}',
+        'width': '{width}',
+        'height': '{height}',
+      },
+      {
+        'borderRadius':'50% / 100% 100% 0 0',
+        'backgroundColor':'{color}',
+        'width': '{width}',
+        'height': '{height}',
+      },
+      {
+        'borderRadius':'50% / 100% 100% 0 0',
+        'backgroundColor':'{color}',
+        'width': '{width}',
+        'height': '{height}',
+      },
+    ],
+    active:false,
+    saveKey:'H',
+  },{
+    name: 'halfcircleside',
+    style: [
+    {
       'borderRadius':'100% 0% 0% 100% / 50% 0 0 50%',
       'backgroundColor':'{color}',
       'width': '{width}',
       'height': '{height}',
-    },{
+    },
+    {
       'borderRadius':'0% 100% 100% 0%/ 0 50% 50% 0',
       'backgroundColor':'{color}',
       'width': '{width}',
       'height': '{height}',
-    },{
-      'borderRadius':'50% / 100% 100% 0 0',
+    },
+    {
+      'borderRadius':'100% 0% 0% 100% / 50% 0 0 50%',
+      'backgroundColor':'{color}',
+      'width': '{width}',
+      'height': '{height}',
+    },
+    {
+      'borderRadius':'0% 100% 100% 0%/ 0 50% 50% 0',
       'backgroundColor':'{color}',
       'width': '{width}',
       'height': '{height}',

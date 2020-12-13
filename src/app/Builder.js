@@ -9,6 +9,9 @@ import ColorPicker from './components/ColorPicker'
 import Actions from './components/Actions' 
 import SelectCommands from './components/SelectCommands';
 import SelectActions from './components/SelectActions';
+import InspectList from './components/InspectList';
+import InspectProperties from './components/InspectProperties';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -19,14 +22,17 @@ import {
   Redirect
 } from "react-router-dom";
 
-function App() {
+function Builder() {
+  const gridPixelBase = 16;
   const [mode, setMode] = React.useState(null);
   const [command, setCommand] = React.useState(null);
   const [usedColors, setUsedColors] = React.useState([]);
   const [selectionLength, setSelectionLength] = React.useState(null);
+  const [selection, setSelection] = React.useState([]);
   const [action, setAction] = React.useState(null);
   const [shape, setShape] = React.useState(null);
   const [color, setColor] = React.useState(null);
+  const [drawn, setDrawn] = React.useState([]);
   
   let { codestring } = useParams();
   const [code, setCode] = React.useState(codestring);
@@ -35,7 +41,7 @@ function App() {
 
   useEffect(() => {
     if (code !== undefined)
-      history.push(""+code);
+      history.push("/builder/"+code);
   }, [code, history]);
   
 
@@ -69,6 +75,7 @@ function App() {
           <Shapes broadcastMode={setMode} broadcastCommand={setCommand} broadcastShape={setShape} color={color} keyPressed={keyPressed} />
           </>
           :null}
+
           {mode?.name==='select'?
           <>
           <SelectCommands selection={selectionLength} keyPressed={keyPressed} broadcastAction={setAction} broadcastCommand={setCommand}  />
@@ -76,16 +83,27 @@ function App() {
 
           </>
           :null}
+
+          {mode?.name==='inspect'?
+          <>
+          <InspectList usedColors={usedColors} drawn={drawn} />
+          <InspectProperties selectionLength={selectionLength} selection={selection} />
+
+          </>
+          :null}
           <Actions keyPressed={keyPressed} broadcastAction={setAction} />
 
-          <ColorPicker keyPressed={keyPressed} usedColors={usedColors} broadcastColor={setColor} />
+          <ColorPicker keyPressed={keyPressed} selection={selection} usedColors={usedColors} broadcastColor={setColor} />
         </div>
         
       </div>
       <div className="grid-pane">
         <Grid 
+          gridPixelBase={gridPixelBase}
           mode={mode} 
+          broadcastDrawn={setDrawn} 
           broadcastSelectionLength={setSelectionLength} 
+          broadcastSelection={setSelection} 
           broadcastUsedColors={setUsedColors}
           broadcastCode={setCode} 
           code={code} 
@@ -100,4 +118,4 @@ function App() {
   );
 }
 
-export default App;
+export default Builder;

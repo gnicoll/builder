@@ -11,4 +11,10 @@ export const modes = [
     iconname: 'hand pointer',
     active:false
   },
+  {
+    name: 'inspect',
+    key:'p',
+    iconname: 'list',
+    active:false
+  },
 ];

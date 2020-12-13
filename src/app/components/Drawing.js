@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
-import Cursor from './Cursor';
-import Console from './Console';
 
 const Drawing = ({drawing, drawn}) => {
     
     if (!(drawing.drawing || drawn)) return null;
-    
 
     const styleInjector = (drawing, style)=>{
         let height = (drawing.destinationTop-drawing.originTop);
@@ -26,7 +23,9 @@ const Drawing = ({drawing, drawn}) => {
     }
 
     let styleIndex = 0;
-    if (drawing.shape.style.length>1) {
+    if (drawing.shape.style.length>1 && drawing.styleIndex !== undefined) {
+        styleIndex = drawing.styleIndex;
+    } else if (drawing.shape.style.length>1) {
         if (drawing.startTop===drawing.originTop) {
             if (drawing.startLeft===drawing.originLeft) {
                 styleIndex = 0; //00
@@ -60,8 +59,7 @@ const Drawing = ({drawing, drawn}) => {
             <div className={"drawing shape "+(drawing.selected?"selected":"")} style={styles} >
             </div>
         </div>
-        )
-
+    )
 };
 
 export default Drawing;

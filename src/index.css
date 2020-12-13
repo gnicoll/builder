@@ -108,11 +108,34 @@ code {
   position: relative;
   left:1em;
 }
+.modescontainer .primarycolor.selected {
+  outline: solid .2em rgba(98, 140, 189, 1);
+}
 .modescontainer .secondarycolor {
   height: 3em;
   width: 3em;
   border: #aaa .1em solid;
   outline: .1em solid white;
+}
+.modescontainer .secondarycolor.selected {
+  outline: solid .2em rgba(98, 140, 189, 1);
+}
+.modescontainer .usedcolorlist {
+  display: flex;
+  flex-wrap: wrap;
+}
+.modescontainer .usedcolor {
+  height: 1em;
+  width: 1em;
+  border-radius: 15%;
+  margin-left: .2em;
+  border: #aaa .1em solid;
+  outline: .1em solid white;
+  cursor: pointer;
+  margin-bottom: .25em;
+}
+.modescontainer .usedcolor.selected {
+  outline: solid .2em rgba(98, 140, 189, 1);
 }
 .modescontainer .historycolorlist {
   display: flex;
@@ -125,6 +148,9 @@ code {
   border: #aaa .1em solid;
   outline: .1em solid white;
   cursor: pointer;
+}
+.modescontainer .historycolor.selected {
+  outline: solid .2em rgba(98, 140, 189, 1);
 }
 .palettelist{
   display: flex;
@@ -145,6 +171,9 @@ code {
   border: #aaa .1em solid;
   outline: .1em solid white;
   cursor: pointer;
+}
+.palettecolorlist .palettecolor.selected {
+  outline: solid .2em rgba(98, 140, 189, 1);
 }
 .paletteicon{
   cursor: pointer;

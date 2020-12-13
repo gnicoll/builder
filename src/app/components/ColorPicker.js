@@ -19,9 +19,9 @@ function convertColors(palette) {
 const ColorPicker = (props) => {
     const [colorPalette, setColorPalette] = React.useState(
         convertColors(palettes[getRandomInt(palettes.length)]));
-    const [colorHistory, setColorHistory] = React.useState(colorPalette);
+    const [colorHistory, setColorHistory] = React.useState(["rgba(0,0,0,1)", "rgba(255,255,255,1)"]);
     const [color, setColor] = React.useState(colorHistory[0]);
-    const [secondaryColor, setSecondaryColor] = React.useState(colorHistory[colorPalette.length-1]);
+    const [secondaryColor, setSecondaryColor] = React.useState(colorHistory[1]);
     const [selection, setSelection] = React.useState(color);
     const [secondarySelection, setSecondarySelection] = React.useState(secondaryColor);
     const [open, setOpen] = React.useState(false)
@@ -53,7 +53,6 @@ const ColorPicker = (props) => {
     });  
 
     const switchColors = (() =>{
-    
         const secColor = secondaryColor;
         setSecondaryColor(color);
         setColor(secColor);
@@ -67,16 +66,13 @@ const ColorPicker = (props) => {
     }, [props.keyPressed]);
 
     useEffect(() => {
-        /*xif (colorHistory.includes(secondaryColor)){
-            const newHistory = colorHistory.filter((c)=>c!==secondaryColor);
-            newHistory.unshift(secondaryColor);
-            setColorHistory(newHistory.slice(0, 10));
-        } else {
-            const newHistory = [...colorHistory];
-            newHistory.unshift(secondaryColor);
-            setColorHistory(newHistory.slice(0, 10));
-        }*/
-    }, [secondaryColor,setColorHistory]);
+        setSelection(color);
+    }, [setSelection,color]);
+
+    useEffect(() => {
+        setSecondarySelection(secondaryColor);
+    }, [setSecondarySelection,secondaryColor]);
+
     useEffect(() => {
         if (colorHistory.includes(color)){
             const newHistory = colorHistory.filter((c)=>c!==color);
@@ -93,6 +89,10 @@ const ColorPicker = (props) => {
     
     return (
         <Container className="modescontainer" >
+        {props.selection.length?
+        <div class="ui divider"></div>
+
+        :null}
         <div class="ui divider"></div>
         <Container>
             <div className="palettecolorlist">
@@ -159,7 +159,7 @@ const ColorPicker = (props) => {
                         
             <Popup
                 on='click'
-                onClose={()=>setColor(selection)}
+                onClose={()=>setColor((' ' + selection).slice(1))}
                 pinned
                     position='right center'
                 trigger={
@@ -208,7 +208,7 @@ const ColorPicker = (props) => {
             </div>
             <Container>           
                 <div className="historycolorlist">
-                    <Icon name='clock outline' />
+                    <Icon name='history' />
                     {colorHistory
                         .map((historyColor, index) => (
                             <div 
@@ -222,18 +222,26 @@ const ColorPicker = (props) => {
                     }
                 </div>
             </Container>
+        <div class="ui divider"></div>
             <Container>           
-                <div className="historycolorlist">
-                    <Icon name='clock outline' />
+                <div className="usedcolorlist">
+                    <Icon name='tint' />
                     {props.usedColors
-                        .map((usedColor, index) => (
-                            <div 
-                                key={index} 
-                                onClick={() => colorHistoryClick(usedColor)} 
-                                name={"square full"} 
-                                style={{backgroundColor:usedColor}} 
-                                className="historycolor"
-                            />                        
+                        .map((usedColor, index) => ( 
+                            <Popup
+                                trigger={
+                                    <div 
+                                        key={index} 
+                                        onClick={() => colorHistoryClick(usedColor.color)} 
+                                        name={"square full"} 
+                                        style={{backgroundColor:usedColor.color}} 
+                                        className="usedcolor"
+                                    /> 
+                                }
+                                content={usedColor.name}
+                                position='right center'
+                                className="switchicon"
+                            />                      
                         ))
                     }
                 </div>

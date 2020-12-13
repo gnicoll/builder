@@ -3,14 +3,16 @@ import Cursor from './Cursor';
 import Console from './Console';
 import Drawing from './Drawing';
 import Drawn from './Drawn';
+import nameColor from '../utils/ColorNamer';
 import { shapes } from '../config/shapes';
+import Coder from '../utils/DrawnStringCoder';
 
 
-function coversSquare(drawing, posX, posY) {
-    return ( drawing.originLeft*16<=posX &&
-        drawing.originTop*16<=posY  &&
-        drawing.destinationLeft*16>=posX &&
-        drawing.destinationTop*16 >=posY);
+function coversSquare(drawing, posX, posY, gridPixelBase) {
+    return ( drawing.originLeft*gridPixelBase<=posX &&
+        drawing.originTop*gridPixelBase<=posY  &&
+        drawing.destinationLeft*gridPixelBase>=posX &&
+        drawing.destinationTop*gridPixelBase >=posY);
 }
 const getShapeBySaveKey = (saveKey)=>{
     for (const shapeSet of shapes) {
@@ -23,12 +25,14 @@ const getShapeBySaveKey = (saveKey)=>{
 }
 
 const Grid = (props) => {
+    const gridPixelBase = props.gridPixelBase;
     const gridOffsetX = 230;
     const gridOffsetY = 50;
     const gridOnClass = "lines-on";
     const [usedColors, setUsedColors] = React.useState([]);
     const getCodeDrawings = (code) => {
-        const drawings = [];
+        return Coder.Decode(code);
+        /*const drawings = [];
         if (code === null || code === undefined) return drawings;
         let colorsArray = [];
         code.split('&').forEach((codedDrawing, index) => {
@@ -41,8 +45,38 @@ const Grid = (props) => {
                 });
                 colorsArray = newColors;
             } else {
-                const dArray = codedDrawing.split('+');
-                if (dArray.length===6) {
+                if (codedDrawing.charAt(0)==="G"){
+                    const gArray = codedDrawing.split('$');
+                    const g = {
+                        drawings: []
+                    }
+                    for (const index in gArray) {
+                        const groupElement = gArray[index];
+                        const dArray = groupElement.split('+');
+                        if (dArray[0]==="G") {
+                            g.originLeft = parseInt(dArray[1].split(',')[0]);
+                            g.originTop = parseInt(dArray[1].split(',')[1]);
+                            g.destinationLeft = parseInt(dArray[2].split(',')[0]);
+                            g.destinationTop = parseInt(dArray[2].split(',')[1]);
+                        } else if (dArray.length===6) {
+                            const d = {
+                                shape: getShapeBySaveKey(dArray[0]) , //key
+                                color: colorsArray[dArray[1]],
+                                startLeft: parseInt(dArray[2].split(',')[0]),
+                                startTop:  parseInt(dArray[2].split(',')[1]),
+                                originLeft:  parseInt(dArray[3].split(',')[0]),
+                                originTop:  parseInt(dArray[3].split(',')[1]),
+                                destinationLeft:  parseInt(dArray[4].split(',')[0]),
+                                destinationTop:  parseInt(dArray[4].split(',')[1]),
+                                sort: index,
+                            }; 
+                            g.drawings.push(d);
+                        }
+                    }
+                    drawings.push(g);
+                }
+                else if (codedDrawing.split('+').length===6) {
+                    const dArray = codedDrawing.split('+');
                     const d = {
                         shape: getShapeBySaveKey(dArray[0]) , //key
                         color: colorsArray[dArray[1]],
@@ -53,12 +87,12 @@ const Grid = (props) => {
                         destinationLeft:  parseInt(dArray[4].split(',')[0]),
                         destinationTop:  parseInt(dArray[4].split(',')[1]),
                         sort: index,
-                    };
+                    }; 
                     drawings.push(d);
                 }
             }
         });
-        return drawings;
+        return drawings;*/
     }; 
     const [gridClass, setGridClass] = React.useState(gridOnClass);
     const [consoleOn, setConsoleOn] = React.useState(false);
@@ -86,38 +120,84 @@ const Grid = (props) => {
 
     const [selectionLength, setSelectionLength] = React.useState(0);
     const [selection, setSelection] = React.useState([]);
+    const [moveVector, setMoveVector] = React.useState({});
     
     const sendCodeOfDrawings = (drawings, colors) => {
-        let code = "";
+        /*let code = "";
         colors.forEach(c=>{
             code = code + c.substr(5,c.lastIndexOf(')')-5).replace(/ /g, '') + "+"
         });
         code += "&";
         drawings.forEach(d => {
-            code = code  
-            + d.shape.saveKey + "+" 
-            + colors.indexOf(d.color) + "+" + 
-            + d.startLeft + "," + d.startTop + "+" + 
-            + d.originLeft + "," + d.originTop + "+" + 
-            + d.destinationLeft + "," + d.destinationTop + "+" + 
-            "&"; 
+            if (d.drawings===undefined){
+                code = code  
+                + d.shape.saveKey + "+" 
+                + colors.indexOf(d.color) + "+" + 
+                + d.startLeft + "," + d.startTop + "+" + 
+                + d.originLeft + "," + d.originTop + "+" + 
+                + d.destinationLeft + "," + d.destinationTop + "+" + 
+                "&"; 
+            }
+            else {
+                code = code  
+                + "G+" 
+                + d.originLeft + "," + d.originTop + "+" + 
+                + d.destinationLeft + "," + d.destinationTop + "$";
+                d.drawings.forEach(gd => {
+                    code = code  
+                    + gd.shape.saveKey + "+" 
+                    + colors.indexOf(gd.color) + "+" + 
+                    + gd.startLeft + "," + gd.startTop + "+" + 
+                    + gd.originLeft + "," + gd.originTop + "+" + 
+                    + gd.destinationLeft + "," + gd.destinationTop + "+" + 
+                    "$"; 
+                });
+                code += "&"; 
+            }
         });
-        props.broadcastCode(code);      
+
+        console.log(Coder.Encode(drawings, colors));
+        console.log(Coder.Encode(Coder.Decode(Coder.Encode(drawings, colors)), colors));
+        //console.log(Coder.Decode(Coder.Encode(drawings, colors)));
+        
+        console.log(code);
+        console.log(Coder.Encode(drawings, colors).length +" vs "+code.length);*/
+        props.broadcastCode(Coder.Encode(drawings, colors));      
     };
     
     useEffect(() => {
         props.broadcastUsedColors(usedColors);      
     }, [props.broadcastUsedColors, usedColors]);
     
+
+
     useEffect(() => {
         const colors = [];
+        const colorsOnly = [];
         drawn.forEach(d => {
-            if (!colors.includes(d.color))
-                colors.push(d.color);
+            if (d.color !== undefined && colorsOnly.indexOf(d.color)<0){
+                colors.push({
+                    color: d.color,
+                    name: nameColor(d.color)
+                });
+                colorsOnly.push(d.color);
+            }
+            else if (d.drawings !== undefined) {
+                d.drawings.forEach(gd => {
+                    if (gd.color !== undefined && colorsOnly.indexOf(gd.color)<0) {
+                        colors.push({
+                            color: gd.color,
+                            name: nameColor(gd.color)
+                        });
+                        colorsOnly.push(gd.color);
+                    }
+                });
+            }
         });
         setUsedColors(colors);  
-        sendCodeOfDrawings(drawn, colors) 
-    }, [setUsedColors, drawn]);
+        sendCodeOfDrawings(drawn, colorsOnly);
+        props.broadcastDrawn(drawn); 
+    }, [setUsedColors, props.broadcastDrawn, drawn]);
     
     //broadcastSelectionLength
     useEffect(() => {
@@ -125,12 +205,15 @@ const Grid = (props) => {
     }, [props.broadcastSelectionLength, selectionLength]);
     
     useEffect(() => {
+        props.broadcastSelection(selection);      
+    }, [props.broadcastSelection, selection]);
+
+    useEffect(() => {
         const drawings = [...drawn];
         drawings.filter((d)=>d.selected).forEach(d => {
             d.color = props.color;
         });
         setDrawn(drawings);
-        //sendCodeOfDrawings(drawings);
     }, [props.color]);
 
     useEffect(() => {
@@ -142,12 +225,36 @@ const Grid = (props) => {
                 d.selected = false;
             });
             setSelectionLength(0);
+            setSelection([]);
+            
             //setDrawn(drawings);
         }          
-
     }, [props.mode]);
 
     useEffect(() => {
+        if ((props.action?.name==='duplicate')) {
+            const drawings = [...drawn];               
+            const selected = drawings.filter((d)=>d.selected);
+            if (selected.length > 0) {
+                for (const index in selected) {
+                    const d = selected[index];
+                    const newDrawing = JSON.parse(JSON.stringify(d));
+                    newDrawing.startLeft++;
+                    newDrawing.originLeft++;
+                    newDrawing.destinationLeft++;
+                    newDrawing.startTop--;
+                    newDrawing.originTop--;
+                    newDrawing.destinationTop--;
+                    newDrawing.selected=true;
+                    drawings.splice(drawings.indexOf(d)+1, 0, newDrawing); 
+                    d.selected=false;
+                }
+                drawings.forEach((d, index) => {
+                    d.sort = index;
+                }); 
+                setDrawn(drawings);
+            }   
+        }  
         if ((props.action?.name==='moveup')) {
             const drawings = [...drawn];               
             const selected = drawings.filter((d)=>d.selected);
@@ -158,7 +265,6 @@ const Grid = (props) => {
                     d.destinationTop--;
                 });
                 setDrawn(drawings);
-                //sendCodeOfDrawings(drawings);
             }   
         }  
         if ((props.action?.name==='movedown')) {
@@ -171,7 +277,6 @@ const Grid = (props) => {
                     d.destinationTop++;
                 });
                 setDrawn(drawings);
-                //sendCodeOfDrawings(drawings);
             }   
         }  
         if ((props.action?.name==='moveleft')) {
@@ -184,7 +289,6 @@ const Grid = (props) => {
                     d.destinationLeft--;
                 });
                 setDrawn(drawings);
-                //sendCodeOfDrawings(drawings);
             }   
         }  
         if ((props.action?.name==='moveright')) {
@@ -197,7 +301,6 @@ const Grid = (props) => {
                     d.destinationLeft++;
                 });
                 setDrawn(drawings);
-                //sendCodeOfDrawings(drawings);
             }   
         } 
         if ((props.action?.name==='clearall')) {
@@ -207,14 +310,67 @@ const Grid = (props) => {
             //delete selected
             const notSelected = drawn.filter((d)=>!d.selected);
             setSelectionLength(0);
+            setSelection([]);
             setDrawn(notSelected);  
-            //sendCodeOfDrawings(notSelected);      
         }  
         if ((props.action?.name==='group')) {
             //TODO: group selected
             const notSelected = drawn.filter((d)=>!d.selected);
             const selected = drawn.filter((d)=>d.selected);
-            //setDrawn(selectedDeleted);        
+            //group each selected, 
+            let groupOriginTop = 0;
+            let groupOriginLeft = 0;
+            let groupDestinationTop = 0;
+            let groupDestinationLeft = 0;
+            let groupSort = drawn.length;
+            for (const d of selected) {
+                //find lowest top and left and sort values
+                if (d.originLeft<groupOriginLeft || groupOriginLeft === 0){
+                    groupOriginLeft = d.originLeft;
+                }
+                if (d.originTop<groupOriginTop || groupOriginTop === 0){
+                    groupOriginTop = d.originTop;
+                }
+                if (d.destinationLeft>groupDestinationLeft || groupDestinationLeft === 0){
+                    groupDestinationLeft = d.destinationLeft;
+                }
+                if (d.destinationTop>groupDestinationTop || groupDestinationTop === 0){
+                    groupDestinationTop = d.destinationTop;
+                }
+                if (d.sort>groupSort){
+                    groupSort = d.sort;
+                }
+
+            }
+            for (const index in selected) {
+                const d = selected[index];
+                d.originLeft = d.originLeft - groupOriginLeft;
+                d.originTop = d.originTop - groupOriginTop;
+                d.destinationLeft = d.destinationLeft - groupOriginLeft;
+                d.destinationTop = d.destinationTop - groupOriginTop;
+                d.startLeft = d.startLeft - groupOriginLeft;
+                d.startTop = d.startTop - groupOriginTop;
+                d.sort = index;
+                d.selected = false;
+            }
+            const group = {
+                originLeft: groupOriginLeft,
+                originTop: groupOriginTop,
+                destinationLeft: groupDestinationLeft,
+                destinationTop: groupDestinationTop,
+                drawings: selected,
+                selected: true,
+                sort: groupSort,
+            };
+            
+            const drawings = notSelected;
+            drawings.push(group);
+            drawings.sort((a,b)=>a.sort-b.sort);
+            drawings.forEach((d, index) => {
+                d.sort = index;
+            });     
+            //insert group into notSelected set this as drawn
+            setDrawn(drawings);        
         }     
         if ((props.action?.name==='up')) {
             //move selection up
@@ -237,7 +393,32 @@ const Grid = (props) => {
                     d.sort = index;
                 });                    
                 setDrawn(drawings);
-                //sendCodeOfDrawings(drawings);
+            }
+        }
+        if ((props.action?.name==='top')) {
+            //move selection up
+            const notSelected = drawn.filter((d)=>!d.selected);
+            const selected = drawn.filter((d)=>d.selected);
+            if (selected.length===1) {
+                const s = selected[0];
+                const drawings = notSelected.concat(selected);               
+                drawings.forEach((d, index) => {
+                    d.sort = index;
+                });                    
+                setDrawn(drawings);
+            }
+        }
+        if ((props.action?.name==='bottom')) {
+            //move selection up
+            const notSelected = drawn.filter((d)=>!d.selected);
+            const selected = drawn.filter((d)=>d.selected);
+            if (selected.length===1) {
+                const s = selected[0];
+                const drawings = selected.concat(notSelected);               
+                drawings.forEach((d, index) => {
+                    d.sort = index;
+                });                    
+                setDrawn(drawings);
             }
         }
         if ((props.action?.name==='down')) {
@@ -261,7 +442,6 @@ const Grid = (props) => {
                     d.sort = index;
                 });                    
                 setDrawn(drawings);
-                //sendCodeOfDrawings(drawings);
             }
         }
         if ((props.action?.name==='linestoggle')) {
@@ -282,10 +462,14 @@ const Grid = (props) => {
         setMousePosition({left: posX, top: posY}); 
 
         if (selecting.selecting && 
-            (selecting.endLeft !== Math.round(posX/16) ||
-             selecting.endTop !== Math.round(posY/16) )) {
-            let transformLeft = Math.round(posX/16) - selecting.startLeft;
-            let transformTop = Math.round(posY/16) - selecting.startTop;
+            (selecting.endLeft !== Math.round(posX/gridPixelBase) ||
+             selecting.endTop !== Math.round(posY/gridPixelBase) )) {
+            let transformLeft = Math.round(posX/gridPixelBase) - selecting.startLeft;
+            let transformTop = Math.round(posY/gridPixelBase) - selecting.startTop;
+            setMoveVector({
+                transformTop:transformTop,
+                transformLeft:transformLeft,
+            });
             if (transformLeft !== 0 || transformTop !== 0) {           
                 const drawings = drawn;
                 const selected = drawings.filter((d)=>d.selected);
@@ -298,15 +482,14 @@ const Grid = (props) => {
                     d.destinationTop = d.destinationTop + transformTop;
                 }
                 //setDrawn(drawings);
-                //sendCodeOfDrawings(drawings);
             }
             setSelecting({
                 selecting: selecting.selecting,
                 selected: selecting.selected,
-                startLeft: Math.round(posX/16),
-                startTop: Math.round(posY/16),
-                endLeft: Math.round(posX/16),
-                endTop: Math.round(posY/16),
+                startLeft: Math.round(posX/gridPixelBase),
+                startTop: Math.round(posY/gridPixelBase),
+                endLeft: Math.round(posX/gridPixelBase),
+                endTop: Math.round(posY/gridPixelBase),
             });
         }
         if (drawing.drawing) {
@@ -319,8 +502,8 @@ const Grid = (props) => {
                 startTop: drawing.startTop,
                 originLeft: drawing.originLeft, 
                 originTop: drawing.originTop,
-                destinationLeft: Math.round(posX/16),
-                destinationTop: Math.round(posY/16),
+                destinationLeft: Math.round(posX/gridPixelBase),
+                destinationTop: Math.round(posY/gridPixelBase),
             };
 
             if (d.destinationLeft<d.startLeft) {
@@ -330,7 +513,7 @@ const Grid = (props) => {
 
 
                 d.destinationLeft = drawing.startLeft;
-                d.originLeft = Math.round(posX/16);
+                d.originLeft = Math.round(posX/gridPixelBase);
             } else {
                 d.originLeft = drawing.startLeft;
             }
@@ -345,7 +528,7 @@ const Grid = (props) => {
                     d.destinationTop = drawing.startTop;
                 } else {
                     d.destinationTop = drawing.startTop;
-                    d.originTop = Math.round(posY/16);
+                    d.originTop = Math.round(posY/gridPixelBase);
                 }
             } else {
                 if (drawing.shape?.ratio === '1:1') {
@@ -367,42 +550,48 @@ const Grid = (props) => {
                 setSelecting({
                     selecting: true,
                     selected: drawn.filter((d)=>d.selected),
-                    startLeft: Math.round(posX/16), 
-                    startTop: Math.round(posY/16),
-                    endLeft: Math.round(posX/16), 
-                    endTop: Math.round(posY/16),
+                    startLeft: Math.round(posX/gridPixelBase), 
+                    startTop: Math.round(posY/gridPixelBase),
+                    endLeft: Math.round(posX/gridPixelBase), 
+                    endTop: Math.round(posY/gridPixelBase),
                 });
             }
             if ((props.command?.name==='select')) {
                 //work out which group or drawing was clicked
                 //drawn is referenced (not duplicated here)
-                const drawings = drawn.sort((a,b)=>b.sort-a.sort);
                 let selectedFound = false; 
-                drawings.forEach(d => {
+                for (let index = drawn.length-1; index >= 0 ; index--) {
+                    const d = drawn[index];
+                 
                     if (d.selected) {
                         d.selected = false;
                         //selectedFound = true;
                     } 
-                    d.selected = (!selectedFound && coversSquare(d, posX, posY));
+                    d.selected = (!selectedFound && coversSquare(d, posX, posY, gridPixelBase));
                     selectedFound = selectedFound || d.selected;
-                });
-                setSelectionLength(drawings.filter((d)=>d.selected).length);
+                }
+                setSelectionLength(drawn.filter((d)=>d.selected).length);
+                setSelection(drawn.filter((d)=>d.selected));
                 //setDrawn(drawings);
             }
 
             if (props.command?.name==='multiselect') {
                 //work out which group or drawing was clicked
-                const drawings = [...drawn].sort((a,b)=>b.sort-a.sort);
-                drawings.forEach(d => {
-                    if (d.selected && (coversSquare(d, posX, posY))) {
+                let clickFound = false; 
+                for (let index = drawn.length-1; index >= 0 ; index--) {
+                    const d = drawn[index];
+                    if (d.selected && (coversSquare(d, posX, posY, gridPixelBase))) {
                         d.selected = false;
                     } else {
-                        d.selected = d.selected || (coversSquare(d, posX, posY));
+                        d.selected =  d.selected || (!clickFound && (coversSquare(d, posX, posY, gridPixelBase)));
                     }
-                });
-                setSelectionLength(drawings.filter((d)=>d.selected).length);
-                setDrawn(drawings);
-                //sendCodeOfDrawings(drawings);
+                    clickFound = clickFound || (coversSquare(d, posX, posY, gridPixelBase));
+                }
+                if (!clickFound){
+                    drawn.forEach((d)=>d.selected=false);
+                }
+                setSelectionLength(drawn.filter((d)=>d.selected).length);
+                //setDrawn(drawn);
             }
         } else {
             if (selecting.selecting) {
@@ -426,12 +615,12 @@ const Grid = (props) => {
                         drawing: true,
                         color: props.color,
                         shape:props.shape,
-                        startLeft: Math.round(posX/16), 
-                        startTop: Math.round(posY/16),
-                        originLeft: Math.round(posX/16), 
-                        originTop: Math.round(posY/16),
-                        destinationLeft: Math.round(posX/16), 
-                        destinationTop: Math.round(posY/16),
+                        startLeft: Math.round(posX/gridPixelBase), 
+                        startTop: Math.round(posY/gridPixelBase),
+                        originLeft: Math.round(posX/gridPixelBase), 
+                        originTop: Math.round(posY/gridPixelBase),
+                        destinationLeft: Math.round(posX/gridPixelBase), 
+                        destinationTop: Math.round(posY/gridPixelBase),
                     }); 
                 }
             } else {
@@ -457,7 +646,6 @@ const Grid = (props) => {
                         }
                         drawings.push(drawing)
                         setDrawn(drawings);
-                        //sendCodeOfDrawings(drawings);
                     }
                 }
             }
@@ -487,7 +675,7 @@ const Grid = (props) => {
                             onMouseDown={(ev)=> handleMouseClick(ev)} 
                             onMouseUp={(ev)=> handleMouseClick(ev)}
                         >
-                            <Drawn drawn={drawn} />
+                            <Drawn moveVector={moveVector} selection={selection} drawn={drawn} />
                             <Drawing drawing={drawing} />
                             <Cursor
                                 mode={props.mode}

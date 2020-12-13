@@ -92,6 +92,16 @@ export const selectActions = [
       iconname: 'arrow right',
     },
   ],
+  [
+    {
+      name: 'duplicate',
+      key:'p',
+      ctrlKey: false,
+      shiftKey: false,
+      iconname: 'copy',
+    },
+  ],
+  //duplicate
 ];
 export const multiSelectActions = [
   [{
