@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import {colors} from '../config/commandsAndActions';
 import {palettes} from '../config/palettes';
+//import { usePalette } from 'react-palette'
+
 
 import { RgbaStringColorPicker } from "react-colorful";
 import "react-colorful/dist/index.css";
@@ -57,6 +59,16 @@ const ColorPicker = (props) => {
         setSecondaryColor(color);
         setColor(secColor);
     });
+/*
+    useEffect(() => {
+        if ((props.bgImage!==null ||props.bgImage!=='')) {
+            const { data, loading, error } = usePalette(IMAGE_URL);
+            if (data !== undefined){
+                console.log("image pallettte:"+data);
+            }
+        }  
+
+    }, [props.bgImage]);*/
 
     useEffect(() => {
         if ((props.keyPressed.key==='x' ||props.keyPressed.key==='X')) {

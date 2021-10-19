@@ -32,67 +32,6 @@ const Grid = (props) => {
     const [usedColors, setUsedColors] = React.useState([]);
     const getCodeDrawings = (code) => {
         return Coder.Decode(code);
-        /*const drawings = [];
-        if (code === null || code === undefined) return drawings;
-        let colorsArray = [];
-        code.split('&').forEach((codedDrawing, index) => {
-            if (index===0) {
-                const codedColors = codedDrawing.split('+');
-                const newColors = [];
-                codedColors.forEach(c=>{
-                    if (c!=="")
-                        newColors.push("rgba("+c+")");
-                });
-                colorsArray = newColors;
-            } else {
-                if (codedDrawing.charAt(0)==="G"){
-                    const gArray = codedDrawing.split('$');
-                    const g = {
-                        drawings: []
-                    }
-                    for (const index in gArray) {
-                        const groupElement = gArray[index];
-                        const dArray = groupElement.split('+');
-                        if (dArray[0]==="G") {
-                            g.originLeft = parseInt(dArray[1].split(',')[0]);
-                            g.originTop = parseInt(dArray[1].split(',')[1]);
-                            g.destinationLeft = parseInt(dArray[2].split(',')[0]);
-                            g.destinationTop = parseInt(dArray[2].split(',')[1]);
-                        } else if (dArray.length===6) {
-                            const d = {
-                                shape: getShapeBySaveKey(dArray[0]) , //key
-                                color: colorsArray[dArray[1]],
-                                startLeft: parseInt(dArray[2].split(',')[0]),
-                                startTop:  parseInt(dArray[2].split(',')[1]),
-                                originLeft:  parseInt(dArray[3].split(',')[0]),
-                                originTop:  parseInt(dArray[3].split(',')[1]),
-                                destinationLeft:  parseInt(dArray[4].split(',')[0]),
-                                destinationTop:  parseInt(dArray[4].split(',')[1]),
-                                sort: index,
-                            }; 
-                            g.drawings.push(d);
-                        }
-                    }
-                    drawings.push(g);
-                }
-                else if (codedDrawing.split('+').length===6) {
-                    const dArray = codedDrawing.split('+');
-                    const d = {
-                        shape: getShapeBySaveKey(dArray[0]) , //key
-                        color: colorsArray[dArray[1]],
-                        startLeft: parseInt(dArray[2].split(',')[0]),
-                        startTop:  parseInt(dArray[2].split(',')[1]),
-                        originLeft:  parseInt(dArray[3].split(',')[0]),
-                        originTop:  parseInt(dArray[3].split(',')[1]),
-                        destinationLeft:  parseInt(dArray[4].split(',')[0]),
-                        destinationTop:  parseInt(dArray[4].split(',')[1]),
-                        sort: index,
-                    }; 
-                    drawings.push(d);
-                }
-            }
-        });
-        return drawings;*/
     }; 
     const [gridClass, setGridClass] = React.useState(gridOnClass);
     const [consoleOn, setConsoleOn] = React.useState(false);
@@ -123,45 +62,6 @@ const Grid = (props) => {
     const [moveVector, setMoveVector] = React.useState({});
     
     const sendCodeOfDrawings = (drawings, colors) => {
-        /*let code = "";
-        colors.forEach(c=>{
-            code = code + c.substr(5,c.lastIndexOf(')')-5).replace(/ /g, '') + "+"
-        });
-        code += "&";
-        drawings.forEach(d => {
-            if (d.drawings===undefined){
-                code = code  
-                + d.shape.saveKey + "+" 
-                + colors.indexOf(d.color) + "+" + 
-                + d.startLeft + "," + d.startTop + "+" + 
-                + d.originLeft + "," + d.originTop + "+" + 
-                + d.destinationLeft + "," + d.destinationTop + "+" + 
-                "&"; 
-            }
-            else {
-                code = code  
-                + "G+" 
-                + d.originLeft + "," + d.originTop + "+" + 
-                + d.destinationLeft + "," + d.destinationTop + "$";
-                d.drawings.forEach(gd => {
-                    code = code  
-                    + gd.shape.saveKey + "+" 
-                    + colors.indexOf(gd.color) + "+" + 
-                    + gd.startLeft + "," + gd.startTop + "+" + 
-                    + gd.originLeft + "," + gd.originTop + "+" + 
-                    + gd.destinationLeft + "," + gd.destinationTop + "+" + 
-                    "$"; 
-                });
-                code += "&"; 
-            }
-        });
-
-        console.log(Coder.Encode(drawings, colors));
-        console.log(Coder.Encode(Coder.Decode(Coder.Encode(drawings, colors)), colors));
-        //console.log(Coder.Decode(Coder.Encode(drawings, colors)));
-        
-        console.log(code);
-        console.log(Coder.Encode(drawings, colors).length +" vs "+code.length);*/
         props.broadcastCode(Coder.Encode(drawings, colors));      
     };
     
@@ -209,9 +109,20 @@ const Grid = (props) => {
     }, [props.broadcastSelection, selection]);
 
     useEffect(() => {
+        //recolor selected when color changes
+        const recolorDrawing = (d, color) => {
+            if (d.color !== undefined)
+                d.color = color;
+            //turn on below to include recoloring groups (not natural behaviour)
+            /*else if (d.drawings !== undefined){
+                d.drawings.forEach(gd => {
+                    recolorDrawing(gd, color);
+                });
+            }*/
+        };
         const drawings = [...drawn];
         drawings.filter((d)=>d.selected).forEach(d => {
-            d.color = props.color;
+            recolorDrawing(d, props.color);
         });
         setDrawn(drawings);
     }, [props.color]);
@@ -666,10 +577,21 @@ const Grid = (props) => {
                 mousePosition={MousePosition} 
             />
         : null}
-            <div className={"grid-container "+gridClass} >
+            <div 
+                style={
+                    {
+                        backgroundColor:props.bgColor,
+                        backgroundImage:"url("+props.bgImage+")",
+                        backgroundSize: 'contain',
+                        backgroundRepeat: 'no-repeat',
+                        height:props.bgSize.height+"em",
+                        width:props.bgSize.width+"em",
+                    }
+                }
+                className={"grid-container "+gridClass} >
                 <div className="sub-grid-lines" >
                     <div className="grid-lines" >
-                        <div 
+                        <div
                             className="grid" 
                             onMouseMove={(ev)=> handleMouseMove(ev)} 
                             onMouseDown={(ev)=> handleMouseClick(ev)} 

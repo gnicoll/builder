@@ -17,6 +17,10 @@ const App = () => {
         path="/view/:codestring?"
         component={Viewer}
       />
+      <Route
+        path="/:codestring?"
+        component={Builder}
+      />
     </Switch>
     </Router>
   );

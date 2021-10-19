@@ -97,10 +97,14 @@ function decodeDrawing(m,colors){
         for (const index in m.split('$')) {
             if (m.split('$').hasOwnProperty(index)) {
                 const element = m.split('$')[index];
+                console.log("decoding group index: "+index);
+                console.log("decoding group m: "+m);
+                console.log("decoding group element: "+element);
                 if (index === "0") {
                     //first is the group 
                     let decodedInt = 0;
-                    const encoded = m.substr(1);
+                    const encoded = element.substr(1);
+                    console.log("decoding group element"+encoded);
                     for (let index = 0; index < [...encoded].length; index++) {
                         decodedInt += Math.pow(base, index)*Coder.charSet.indexOf([...encoded][index]);
                     }
@@ -113,6 +117,7 @@ function decodeDrawing(m,colors){
                     }
                 } else {
                     //then recursively call decodeDrawing to get drawings
+                    console.log("pushing drawing, element: "+element);
                     group.drawings.push(decodeDrawing(element, colors));
                 }
             }
@@ -125,6 +130,13 @@ function decodeDrawing(m,colors){
             decodedInt += Math.pow(base, index)*Coder.charSet.indexOf([...encoded][index]);
             
         }
+        
+        console.log(getShapeBySaveKey([...m][0])+
+            (colors[parseInt(decodedInt.toString().substr(0,1))-1] +" "+
+            IntToString(parseInt(decodedInt.toString().substr(1,2))) +","+
+            IntToString(parseInt(decodedInt.toString().substr(3,2))) +" - "+
+            IntToString(parseInt(decodedInt.toString().substr(5,2)))+","+
+            IntToString(parseInt(decodedInt.toString().substr(7,2)))));
         return {
             color: colors[parseInt(decodedInt.toString().substr(0,1))-1],
             shape: getShapeBySaveKey([...m][0]),
@@ -167,10 +179,15 @@ function codeDrawing(d, colors){
             IntToString(d.originTop) +
             IntToString(d.destinationLeft)+
             IntToString(d.destinationTop);
-        
+        console.log(d.shape.saveKey+
+            (colors.indexOf(d.color)+1) +" "+
+            IntToString(d.originLeft) +","+
+            IntToString(d.originTop) +" - "+
+            IntToString(d.destinationLeft)+","+
+            IntToString(d.destinationTop));
         let n = parseInt(intString);
         m = convertDecimalToBase(n);
-        
+        console.log(m);
         m = d.shape.saveKey + styleIndex + m;
     } else {
         const intString =    
@@ -178,7 +195,9 @@ function codeDrawing(d, colors){
         IntToString(d.originTop) +
         IntToString(d.destinationLeft)+
         IntToString(d.destinationTop);
-    
+        
+        console.log(m);
+        
         let n = parseInt(intString);
         m = convertDecimalToBase(n)+"$";
 
@@ -186,6 +205,7 @@ function codeDrawing(d, colors){
             m += codeDrawing(gd, colors)+"$";
         });
         m = "G" + m.slice(0, -1);
+        console.log(m);
     } 
     return m;
 }

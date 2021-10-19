@@ -12,6 +12,12 @@ export const modes = [
     active:false
   },
   {
+    name: 'grid',
+    key:'g',
+    iconname: 'grid layout',
+    active:false
+  },
+  {
     name: 'inspect',
     key:'p',
     iconname: 'list',

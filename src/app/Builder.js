@@ -11,6 +11,9 @@ import SelectCommands from './components/SelectCommands';
 import SelectActions from './components/SelectActions';
 import InspectList from './components/InspectList';
 import InspectProperties from './components/InspectProperties';
+import BackgroundImage from './components/BackgroundImage';
+import BackgroundColor from './components/BackgroundColor';
+import BackgroundSize from './components/BackgroundSize';
 
 import {
   BrowserRouter as Router,
@@ -33,6 +36,9 @@ function Builder() {
   const [shape, setShape] = React.useState(null);
   const [color, setColor] = React.useState(null);
   const [drawn, setDrawn] = React.useState([]);
+  const [bgColor, setBgColor] = React.useState(null);
+  const [bgImage, setBgImage] = React.useState(null);
+  const [bgSize, setBgSize] = React.useState({height:"100",width:"100"});
   
   let { codestring } = useParams();
   const [code, setCode] = React.useState(codestring);
@@ -83,7 +89,14 @@ function Builder() {
 
           </>
           :null}
-
+          
+          {mode?.name==='grid'?
+          <>
+          <BackgroundSize broadcastBgSize={setBgSize} drawn={drawn} />
+          <BackgroundImage broadcastBgImage={setBgImage} />
+          <BackgroundColor broadcastBgColor={setBgColor} color={color} />
+          </>
+          :null}
           {mode?.name==='inspect'?
           <>
           <InspectList usedColors={usedColors} drawn={drawn} />
@@ -93,7 +106,13 @@ function Builder() {
           :null}
           <Actions keyPressed={keyPressed} broadcastAction={setAction} />
 
-          <ColorPicker keyPressed={keyPressed} selection={selection} usedColors={usedColors} broadcastColor={setColor} />
+          <ColorPicker
+            bgImage={bgImage} 
+            keyPressed={keyPressed} 
+            selection={selection} 
+            usedColors={usedColors} 
+            broadcastColor={setColor} 
+          />
         </div>
         
       </div>
@@ -106,6 +125,9 @@ function Builder() {
           broadcastSelection={setSelection} 
           broadcastUsedColors={setUsedColors}
           broadcastCode={setCode} 
+          bgColor={bgColor}
+          bgImage={bgImage}
+          bgSize={bgSize}
           code={code} 
           action={action} 
           command={command} 
