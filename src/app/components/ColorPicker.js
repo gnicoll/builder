@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import {colors} from '../config/commandsAndActions';
 import {palettes} from '../config/palettes';
-//import { usePalette } from 'react-palette'
 
 
 import { RgbaStringColorPicker } from "react-colorful";
